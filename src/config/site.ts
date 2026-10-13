@@ -1,13 +1,10 @@
-// Site-wide constants. The GitHub link renders without a live star count
-// until the repo is public — fetching the real count is an M7 README-polish
-// task.
+// Site-wide constants — set per site before launch (brand, canonical URL,
+// support email). Landing copy lives in src/config/landing.ts.
 export const siteConfig = {
-  name: "ai-saas-starter",
+  name: "Brand",
   description:
-    "Open-source SaaS foundation: auth, Stripe subscriptions, and a credits ledger that survives webhook retries.",
-  /** Canonical production URL — set to your deployment before launch. */
-  url: "https://ai-saas-starter-six.vercel.app",
-  github: "https://github.com/nikandr-surkov/ai-saas-starter",
-  /** The paid multi-provider version. One link, no upsell copy. */
-  pro: "https://nikandr.com",
+    "AI tools that run on credits: free credits to start, pay only for what you use.",
+  /** Canonical production URL — set to the site's domain before launch. */
+  url: "https://example.com",
+  supportEmail: "support@example.com",
 } as const;

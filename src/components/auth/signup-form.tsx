@@ -18,8 +18,11 @@ const signupSchema = z.object({
 
 export function SignupForm({
   requiresVerification,
+  next = "/dashboard",
 }: {
   requiresVerification: boolean;
+  /** Same-origin path to land on after sign-up (already sanitized). */
+  next?: string;
 }) {
   const router = useRouter();
   const [pending, setPending] = React.useState(false);
@@ -57,7 +60,7 @@ export function SignupForm({
       setVerifyNotice(true);
       return;
     }
-    router.push("/dashboard");
+    router.push(next);
     router.refresh();
   }
 

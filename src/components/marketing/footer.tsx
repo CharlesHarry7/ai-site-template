@@ -1,102 +1,71 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { homeLanding, toolLandings } from "@/config/landing";
 import { siteConfig } from "@/config/site";
 
-// v4.1 footer — a destination, not an afterthought: full-width ink block,
-// giant Archivo wordmark with the yellow offset shadow, chunky mono link
-// chips with the nav hover physics, the mascot in the corner. Light-on-
-// ink text stays >=4.5:1 (canvas/ink 17.8, on-ink-muted 10.3).
+// Quiet footer (DESIGN.md v5): brand line, every tool page as an internal
+// link (crawl paths for the long-tail pages), product and legal links.
 const columns = [
+  {
+    title: "Tools",
+    links: [homeLanding, ...toolLandings].map((page) => ({
+      label: page.h1,
+      href: page.slug ? `/tools/${page.slug}` : "/",
+    })),
+  },
   {
     title: "Product",
     links: [
-      { label: "sign in", href: "/login" },
-      { label: "sign up", href: "/signup" },
-      { label: "pricing", href: "/pricing" },
-    ],
-  },
-  {
-    title: "Repo",
-    links: [
-      { label: "github", href: siteConfig.github, external: true },
-      { label: "pro version", href: siteConfig.pro, external: true },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Sign in", href: "/login" },
+      { label: "Create account", href: "/signup" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "privacy", href: "/privacy" },
-      { label: "terms", href: "/terms" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
     ],
   },
-] as const;
+];
 
 export function MarketingFooter() {
   return (
-    <footer className="bg-(--band-bg) text-(--band-fg) [--muted-ink:var(--band-muted)] [--title-shadow:var(--pop-yellow-bold)]">
-      <div className="mx-auto w-full max-w-[1160px] px-6 pt-16 pb-10">
-        <div className="flex flex-wrap items-start justify-between gap-x-16 gap-y-12">
-          <div className="max-w-full">
-            <p className="font-display text-[clamp(3rem,1.6rem+3.5vw,6rem)] leading-none tracking-tight uppercase [text-shadow:0.05em_0.05em_0_var(--title-shadow)]">
-              ai-saas-
-              <br />
-              starter
-            </p>
-            <p className="mt-6 font-mono text-xs">
-              Built by{" "}
-              <a
-                href="https://nikandr.com"
-                target="_blank"
-                rel="noreferrer"
-                className="marker-hover underline underline-offset-4"
-              >
-                Nikandr Surkov
-              </a>
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-x-14 gap-y-10">
-            {columns.map((column) => (
-              <nav key={column.title} aria-label={column.title}>
-                <p className="eyebrow mb-3.5">{column.title}</p>
-                <ul className="flex flex-col items-start gap-3">
-                  {column.links.map((link) =>
-                    "external" in link && link.external ? (
-                      <li key={link.label}>
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="footer-chip"
-                        >
-                          {link.label}
-                        </a>
-                      </li>
-                    ) : (
-                      <li key={link.label}>
-                        <Link href={link.href} className="footer-chip">
-                          {link.label}
-                        </Link>
-                      </li>
-                    ),
-                  )}
-                </ul>
-              </nav>
-            ))}
-          </div>
-        </div>
-        <div className="mt-14 flex flex-wrap items-end justify-between gap-6">
-          <p className="font-mono text-[10.5px] tracking-wider text-muted-foreground">
-            © 2026 {siteConfig.name} · MIT license · ledger-true since day one
+    <footer className="border-t bg-(--band-bg) text-(--band-fg)">
+      <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-14 sm:grid-cols-[1.4fr_repeat(3,1fr)]">
+        <div>
+          <p className="font-serif text-2xl">{siteConfig.name}</p>
+          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+            {siteConfig.description}
           </p>
-          <Image
-            src="/illustrations/mascot-hello.png"
-            alt="Gold coin mascot with sunglasses pushed up, waving goodbye"
-            width={72}
-            height={72}
-            className="illo size-18"
-          />
+          <a
+            href={`mailto:${siteConfig.supportEmail}`}
+            className="link-pop mt-4 inline-block text-sm"
+          >
+            {siteConfig.supportEmail}
+          </a>
         </div>
+        {columns.map((column) => (
+          <nav key={column.title} aria-label={column.title}>
+            <p className="eyebrow mb-3">{column.title}</p>
+            <ul className="grid gap-2.5 text-sm">
+              {column.links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+      </div>
+      <div className="mx-auto w-full max-w-6xl border-t px-6 py-6 text-xs text-muted-foreground">
+        © {new Date().getFullYear()} {siteConfig.name}
       </div>
     </footer>
   );

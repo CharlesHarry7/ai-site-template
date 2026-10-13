@@ -1,35 +1,42 @@
 import { expect, test } from "@playwright/test";
 
-test("landing renders the ledger sections with signed-out auth CTAs", async ({
+test("keyword landing: H1, first-screen tool, sections, sibling pages", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "A complete AI SaaS. Free.",
+  // H1 is the target keyword (src/config/landing.ts).
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "AI image generator",
   );
-  // Signed-out nav: Sign in + Get started; hero CTA goes to signup.
+  // Signed-out nav: Sign in + Get started.
   await expect(
     page.getByRole("banner").getByRole("link", { name: "Get started" }),
   ).toHaveAttribute("href", "/signup");
   await expect(
     page.getByRole("banner").getByRole("link", { name: "Sign in" }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Start free — 10 credits" }),
-  ).toHaveAttribute("href", "/signup");
-  await expect(page.locator("#features")).toBeVisible();
-  // Pricing section reads from config/plans.ts.
-  await expect(page.locator("#pricing")).toBeVisible();
+  // The working prompt box is in the first screen and posts to /generate.
+  const box = page.locator('form[action="/generate"]');
+  await expect(box).toBeVisible();
+  await expect(box.locator('textarea[name="prompt"]')).toBeVisible();
+  await expect(page.locator("#how-it-works")).toBeVisible();
+  await expect(page.locator("#use-cases")).toBeVisible();
+  // Pricing reads from config/plans.ts, including the credit packs.
   await expect(page.locator("#pricing")).toContainText("$9/mo");
-  // The clarity block states the product in plain words.
-  await expect(page.locator("#what")).toContainText(
-    "This website is the demo.",
+  await expect(page.locator("#pricing")).toContainText("$39");
+  await expect(page.locator("#faq details").first()).toBeVisible();
+  // Sibling long-tail pages are linked and render their own H1.
+  await page.locator('#more-tools a[href="/tools/ai-logo-generator"]').click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "AI logo generator",
   );
-  await expect(page.locator("#how")).toContainText("Clone it");
-  // The gallery renders all six generated posters with caption chips.
-  await expect(page.locator("#gallery img")).toHaveCount(6);
-  await expect(page.locator("#gallery")).toContainText("sunset over mountains");
-  await expect(page.locator('details[name="faq"]').first()).toBeVisible();
+});
+
+test("a landing prompt survives the sign-in redirect", async ({ page }) => {
+  await page.goto("/");
+  await page.locator('textarea[name="prompt"]').fill("Watercolor fox");
+  await page.locator('form[action="/generate"] button[type="submit"]').click();
+  await expect(page).toHaveURL(/\/login\?next=%2Fgenerate%3Fprompt%3DWatercolor/);
 });
 
 test("theme toggle flips to dark, renders, and persists across reloads", async ({

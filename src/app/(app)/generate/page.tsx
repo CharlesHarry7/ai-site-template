@@ -18,8 +18,15 @@ function formatTimestamp(date: Date): string {
   return date.toISOString().slice(0, 16).replace("T", " ");
 }
 
-export default async function GeneratePage() {
+export default async function GeneratePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ prompt?: string | string[] }>;
+}) {
   const session = await requireSession();
+  const raw = (await searchParams).prompt;
+  const initialPrompt =
+    typeof raw === "string" ? raw.trim().slice(0, 1000) : undefined;
 
   const history = await db
     .select()
@@ -44,6 +51,7 @@ export default async function GeneratePage() {
         balance={session.user.creditBalance ?? 0}
         cost={GENERATION_COST_CREDITS}
         mock={env.AI_MOCK}
+        initialPrompt={initialPrompt}
       />
 
       <section>

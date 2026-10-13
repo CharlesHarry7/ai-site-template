@@ -27,9 +27,12 @@ export function GenerateForm({
   balance,
   cost,
   mock,
+  initialPrompt,
 }: {
   balance: number;
   cost: number;
+  /** Prefill from the landing page prompt box (?prompt=). */
+  initialPrompt?: string;
   /** AI_MOCK is on — surface the "FAIL" failure switch in the placeholder. */
   mock: boolean;
 }) {
@@ -68,6 +71,7 @@ export function GenerateForm({
           }
           minLength={3}
           maxLength={1000}
+          defaultValue={initialPrompt}
           required
           disabled={pending}
         />

@@ -7,7 +7,16 @@ import { features } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Create account" };
 
-export default function SignupPage() {
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { next } = await searchParams;
+  // Same-origin paths only — never redirect to a caller-supplied host.
+  const safeNext =
+    next?.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+
   return (
     <div className="grid gap-6">
       <div>
@@ -17,9 +26,9 @@ export default function SignupPage() {
       <OAuthButtons
         google={features.googleOAuth}
         github={features.githubOAuth}
-        next="/dashboard"
+        next={safeNext}
       />
-      <SignupForm requiresVerification={features.email} />
+      <SignupForm requiresVerification={features.email} next={safeNext} />
       <p className="text-sm text-muted-foreground">
         Already registered?{" "}
         <Link href="/login" className="link-pop">

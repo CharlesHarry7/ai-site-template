@@ -19,15 +19,15 @@ function usd(cents: number): string {
 // reads from src/config/plans.ts; /pricing carries the long-form version.
 export function PricingSection() {
   return (
-    <section id="pricing" className="scroll-mt-16 border-t-[3px]">
+    <section id="pricing" className="scroll-mt-16 border-t">
       <div className="mx-auto w-full max-w-[1160px] px-6 py-20">
         <div className="pop-in mb-11 flex items-end justify-between gap-8">
           <div>
             <p className="eyebrow">Pricing</p>
-            <h2 className="text-title mt-4">Pick a plan.</h2>
+            <h2 className="text-title mt-4">Simple credit pricing</h2>
             <p className="mt-4 max-w-[52ch]">
-              <span className="marker text-foreground">One config file</span>{" "}
-              drives pricing, checkout, and webhook grants. Start free.
+              Start with free credits. Subscribe for a monthly allowance, or
+              buy a pack once — credits never expire.
             </p>
           </div>
           {/* Pricing accent (DESIGN.md v3.1 illustration set). */}
@@ -39,16 +39,16 @@ export function PricingSection() {
             className="illo hidden shrink-0 sm:block"
           />
         </div>
-        <div className="border-t-2 border-rule">
+        <div className="border-t">
           {Object.values(plans).map((plan) => (
             <div
               key={plan.id}
-              className="pop-in grid grid-cols-[64px_1fr] items-center gap-x-6 gap-y-3 border-b-2 px-2 py-7 transition-[translate,background-color] hover:bg-accent-soft motion-safe:hover:-translate-y-0.5 sm:grid-cols-[64px_170px_1fr_130px_auto]"
+              className="pop-in grid grid-cols-[64px_1fr] items-center gap-x-6 gap-y-3 border-b px-2 py-7 transition-[translate,background-color] hover:bg-accent-soft motion-safe:hover:-translate-y-0.5 sm:grid-cols-[64px_170px_1fr_130px_auto]"
             >
               <span className="font-mono text-xs text-muted-foreground">
                 {plan.id}
               </span>
-              <h3 className="flex items-center gap-3 font-heading text-2xl font-extrabold">
+              <h3 className="flex items-center gap-3 font-heading text-2xl">
                 {plan.name}
                 {plan.id === "pro" ? (
                   <Sticker color="pink" className="text-[9px]">
@@ -84,16 +84,16 @@ export function PricingSection() {
               </span>
               <Link
                 href="/signup"
-                className="border-hard press col-start-2 self-center justify-self-start rounded-md bg-primary px-3.5 py-1.5 font-mono text-xs font-semibold tracking-wider text-primary-foreground uppercase sm:col-start-5 sm:justify-self-end"
+                className="press col-start-2 self-center justify-self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground sm:col-start-5 sm:justify-self-end"
               >
-                Start →
+                Start
               </Link>
             </div>
           ))}
           {topupPacks.map((pack) => (
             <div
               key={pack.id}
-              className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 border-b-2 px-2 py-6 sm:grid-cols-[64px_150px_1fr_110px_auto]"
+              className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 border-b px-2 py-6 sm:grid-cols-[64px_150px_1fr_110px_auto]"
             >
               <span className="font-mono text-xs text-muted-foreground">
                 pack

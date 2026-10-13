@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { StarIcon } from "lucide-react";
 
 import { getSession } from "@/lib/auth/session";
 import { LogoMark } from "@/components/logo-mark";
@@ -9,11 +8,10 @@ import { siteConfig } from "@/config/site";
 import { MobileMenu } from "./nav-mobile";
 
 const links = [
-  { href: "/#features", label: "Features" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/#gallery", label: "Gallery" },
-  { href: "/#ai-native", label: "AI-native" },
-  { href: "/#pro", label: "Pro" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#more-tools", label: "Tools" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/#faq", label: "FAQ" },
 ] as const;
 
 // Auth-aware (server-side session): visitors get Sign in + Get started,
@@ -47,16 +45,6 @@ export async function MarketingNav() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-3 lg:ml-0">
-          {/* Star count is a constant until the repo has one worth showing. */}
-          <a
-            href={siteConfig.github}
-            target="_blank"
-            rel="noreferrer"
-            className="border-hard press hidden items-center gap-2 rounded-md px-3 py-1.5 font-mono text-xs sm:flex"
-          >
-            <StarIcon className="size-3.5" aria-hidden />
-            GitHub
-          </a>
           <ThemeToggle />
           {session ? (
             <Link
