@@ -7,13 +7,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-instrument-sans);
-  --font-mono: var(--font-martian-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
   /* v4 four faces, four jobs: Archivo Black = display (H1 + section
      titles ONLY), Bricolage = subheads/cards, Instrument = body,
      Martian Mono = data. */
-  --font-display: var(--font-archivo);
-  --font-heading: var(--font-bricolage);
+  --font-display: var(--font-serif);
+  --font-heading: var(--font-serif);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -823,4 +823,180 @@
   ::after {
     animation: none !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CLAUDE STYLE — "Paper & Clay" (DESIGN.md v5). This block comes last on
+   purpose: it re-tunes the raw tokens the whole UI reads, so every surface
+   goes quiet at once. Warm paper, ink text, one clay accent, hairline
+   borders, soft depth. No hard offset shadows, no uppercase shouting.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --ink: oklch(0.2 0.006 90); /* ≈ #141413 */
+  --ink-deep: oklch(0.2 0.006 90);
+  --canvas: oklch(0.982 0.006 95); /* ≈ #FAF9F5 warm paper */
+  --clay: oklch(0.67 0.13 42); /* ≈ #D97757 */
+  --clay-deep: oklch(0.58 0.14 40); /* ≈ #C6613F, hover + text on paper */
+  --clay-wash: oklch(0.95 0.025 50); /* soft clay tint for highlights */
+  /* The old pop palette becomes quiet warm tints (surfaces only). */
+  --pop-yellow: oklch(0.955 0.012 85);
+  --pop-mint: oklch(0.955 0.014 150);
+  --pop-sky: oklch(0.955 0.012 230);
+  --pop-pink: oklch(0.955 0.014 30);
+  --pop-orange: var(--clay-wash);
+  --pop-yellow-bold: var(--clay);
+  --pop-mint-bold: oklch(0.72 0.09 155);
+  --pop-sky-bold: oklch(0.72 0.07 235);
+  --pop-pink-bold: oklch(0.74 0.09 25);
+  --pop-orange-bold: var(--clay);
+  --credit: oklch(0.6 0.11 155);
+  --debit: oklch(0.58 0.17 30);
+  --radius: 12px;
+  --muted-ink: oklch(0.47 0.008 90); /* ≈ #5E5D59 */
+}
+.dark {
+  --canvas: oklch(0.25 0.004 90); /* ≈ #262624 */
+  --ink: oklch(0.965 0.006 95);
+  --clay: oklch(0.7 0.13 42);
+  --clay-deep: oklch(0.74 0.12 45);
+  --clay-wash: oklch(0.31 0.03 45);
+  --pop-yellow: oklch(0.285 0.005 90);
+  --pop-mint: oklch(0.285 0.01 150);
+  --pop-sky: oklch(0.285 0.01 230);
+  --pop-pink: oklch(0.285 0.012 30);
+  --pop-orange: var(--clay-wash);
+  --muted-ink: oklch(0.74 0.006 90);
+}
+:root,
+.dark {
+  --border-w: 1px;
+  --border-w-emph: 1px;
+  --shadow-hard-sm: 0 1px 2px 0 oklch(0.2 0.01 60 / 0.06);
+  --shadow-hard-md: 0 1px 3px 0 oklch(0.2 0.01 60 / 0.08), 0 4px 16px -6px oklch(0.2 0.01 60 / 0.1);
+  --shadow-hard-lg: 0 2px 6px 0 oklch(0.2 0.01 60 / 0.08), 0 16px 40px -12px oklch(0.2 0.01 60 / 0.18);
+  --shadow-hover: var(--shadow-hard-lg);
+  --title-shadow: transparent;
+  --action: var(--clay);
+  --on-accent: oklch(0.99 0.004 95);
+  --primary: var(--clay);
+  --primary-foreground: oklch(0.99 0.004 95);
+  --primary-text: var(--clay-deep);
+  --paper-2: color-mix(in oklch, var(--canvas), var(--ink) 4%);
+  --card: color-mix(in oklch, var(--canvas), white 55%);
+  --border: color-mix(in oklch, var(--ink), transparent 86%);
+  --input: color-mix(in oklch, var(--ink), transparent 80%);
+  --ring: var(--clay);
+  --hairline: var(--border);
+  --rule: var(--border);
+  --sidebar-border: var(--border);
+  --sidebar-primary: var(--clay);
+  --sidebar-primary-foreground: oklch(0.99 0.004 95);
+  --accent-soft: var(--clay-wash);
+  --band-bg: var(--paper-2);
+  --band-fg: var(--ink);
+  --band-muted: var(--muted-ink);
+}
+.dark {
+  --card: color-mix(in oklch, var(--canvas), white 5%);
+}
+.loud {
+  --border-w: 1px;
+  --border-w-emph: 1px;
+  --shadow-hard-sm: 0 1px 2px 0 oklch(0.2 0.01 60 / 0.06);
+  --shadow-hard-md: 0 1px 3px 0 oklch(0.2 0.01 60 / 0.08), 0 4px 16px -6px oklch(0.2 0.01 60 / 0.1);
+  --shadow-hard-lg: 0 2px 6px 0 oklch(0.2 0.01 60 / 0.08), 0 16px 40px -12px oklch(0.2 0.01 60 / 0.18);
+  --shadow-hover: var(--shadow-hard-lg);
+  font-size: 1.0625rem;
+  font-weight: 400;
+}
+@layer base {
+  ::selection {
+    background-color: var(--clay-wash);
+    color: var(--ink);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+  }
+  h1 {
+    font-weight: 500;
+    line-height: 1.08;
+  }
+}
+@layer components {
+  /* Calm press: a soft lift, no jumping blocks. */
+  .press,
+  .press-calm {
+    box-shadow: var(--shadow-hard-sm);
+    transition:
+      box-shadow 160ms ease,
+      background-color 160ms ease,
+      border-color 160ms ease;
+  }
+  .press:hover,
+  .press-calm:hover {
+    translate: none;
+    box-shadow: var(--shadow-hard-md);
+  }
+  .press:active,
+  .press-calm:active {
+    translate: none;
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .marker::before,
+  .marker-hover::before {
+    background: var(--clay-wash) !important;
+    transform: none !important;
+  }
+  .tilt,
+  .tilt-l,
+  .tilt:hover,
+  .tilt-l:hover {
+    rotate: none;
+  }
+}
+@utility text-display {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 1.2rem + 4.2vw, 4.6rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  text-transform: none;
+  text-shadow: none;
+}
+@utility text-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 1.3rem + 1.6vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-transform: none;
+  text-shadow: none;
+}
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--clay-deep);
+}
+@utility link-pop {
+  color: var(--clay-deep);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklch, var(--clay-deep), transparent 60%);
+  text-underline-offset: 4px;
+  &:hover {
+    background-color: transparent;
+    color: var(--ink);
+    text-decoration-color: var(--ink);
+  }
+}
+@utility chip-mono {
+  border: 1px solid var(--border);
+  background: var(--paper-2);
 }

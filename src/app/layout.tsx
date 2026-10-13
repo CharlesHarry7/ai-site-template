@@ -1,34 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Archivo_Black,
-  Bricolage_Grotesque,
-  Instrument_Sans,
-  Martian_Mono,
-} from "next/font/google";
+import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
 
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument-sans",
+// DESIGN.md (Claude style): a book serif for display and headings, a quiet
+// grotesque for UI and body, a mono for numbers and code.
+const serif = Source_Serif_4({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const sans = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const martianMono = Martian_Mono({
-  variable: "--font-martian-mono",
-  subsets: ["latin"],
-});
-
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
-  subsets: ["latin"],
-});
-
-// DESIGN.md v4: the display face — hero H1 and section titles ONLY.
-const archivo = Archivo_Black({
-  variable: "--font-archivo",
-  weight: "400",
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
 });
 
@@ -77,7 +69,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${instrumentSans.variable} ${martianMono.variable} ${bricolage.variable} ${archivo.variable} h-full antialiased`}
+      className={`${serif.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

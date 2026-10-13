@@ -1,3 +1,31 @@
+# DESIGN.md — "Paper & Clay" (v5, Claude style)
+
+**v5 supersedes the LOUD MODE rules below wherever they conflict.** The
+v4 text stays as history; the tokens it names still exist, but globals.css
+re-tunes them in the final "CLAUDE STYLE" block.
+
+## v5 hard rules
+
+1. **Warm paper, ink text, one accent.** Canvas ≈ #FAF9F5, ink ≈ #141413,
+   muted ink ≈ #5E5D59. The only accent is clay ≈ #D97757 (hover/text
+   #C6613F) — primary buttons, links, credit highlights. No second accent.
+   The old pop palette survives only as near-neutral warm tints for
+   quiet surfaces.
+2. **Type:** Source Serif 4 (400/500) for display and headings, sentence
+   case, slight negative tracking. Inter for UI and body. JetBrains Mono
+   for numbers, credits and code. No uppercase titles, no text shadows.
+3. **Hairlines, soft depth.** 1px borders at ~14% ink. Shadows are soft
+   and short (three tiers, still `shadow-hard-*` utility names). No hard
+   offset shadows, no gradients, no tilt, no press-jump physics.
+4. **Calm motion:** opacity/shadow transitions ≤ 200ms. Nothing bounces.
+5. **Copy:** plain and specific. H1 states the job in the user's words —
+   usually the target keyword. Paragraphs ≤ 2 sentences on marketing.
+6. **The tool comes first.** On a keyword landing page the working tool
+   (prompt box + result) sits in the first screen, before any marketing.
+7. Dark mode: canvas ≈ #262624, ink ≈ #FAF9F5, same clay accent.
+
+---
+
 # DESIGN.md — "The Ledger", LOUD MODE (v4)
 
 An accountant's ledger repainted as a poster wall. v4 keeps the v3.1
