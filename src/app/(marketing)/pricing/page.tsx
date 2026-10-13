@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CoinsIcon, DoorOpenIcon, InfinityIcon } from "lucide-react";
 
-import { plans, topupPack } from "@/config/plans";
+import { plans, topupPacks } from "@/config/plans";
 
 import { DigitBoxes } from "@/components/digit-boxes";
 import { IconChip } from "@/components/icon-chip";
@@ -74,17 +74,22 @@ export default function PricingPage() {
             </div>
           </div>
         ))}
-        <div className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 gap-y-2 border-b-2 px-2 py-7 transition-colors hover:bg-accent-soft sm:grid-cols-[64px_160px_1fr_auto]">
-          <span className="font-mono text-xs text-muted-foreground">topup</span>
-          <h2 className="text-xl">{topupPack.name}</h2>
-          <p className="col-start-2 text-xl sm:col-start-3">
-            {topupPack.credits} credits, one-time. No subscription required —
-            stack them whenever you run low.
-          </p>
-          <div className="col-start-2 sm:col-start-4 sm:justify-self-end">
-            <DigitBoxes size="sm" value={usd(topupPack.priceCents)} />
+        {topupPacks.map((pack) => (
+          <div
+            key={pack.id}
+            className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 gap-y-2 border-b-2 px-2 py-7 transition-colors hover:bg-accent-soft sm:grid-cols-[64px_160px_1fr_auto]"
+          >
+            <span className="font-mono text-xs text-muted-foreground">pack</span>
+            <h2 className="text-xl">{pack.name}</h2>
+            <p className="col-start-2 text-xl sm:col-start-3">
+              {pack.credits.toLocaleString("en-US")} credits, one-time. No
+              subscription required.
+            </p>
+            <div className="col-start-2 sm:col-start-4 sm:justify-self-end">
+              <DigitBoxes size="sm" value={usd(pack.priceCents)} />
+            </div>
           </div>
-        </div>
+        ))}
       </div>
 
       <p className="mt-10 text-xl">

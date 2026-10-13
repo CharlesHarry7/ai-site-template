@@ -5,7 +5,7 @@ import { CoinsIcon, DoorOpenIcon, InfinityIcon } from "lucide-react";
 import {
   GENERATION_COST_CREDITS,
   plans,
-  topupPack,
+  topupPacks,
   type Plan,
 } from "@/config/plans";
 import { db } from "@/db";
@@ -226,24 +226,114 @@ export default async function BillingPage() {
         ))}
       </div>
 
-      {/* Top-up: third purchase, same anatomy, slimmer. */}
-      <div className="flex max-w-xl flex-wrap items-center gap-x-5 gap-y-3 rounded-lg border-2 bg-card p-5 shadow-hard-sm transition-[translate,box-shadow] motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-hard">
-        <div className="min-w-0 flex-1">
-          <h3 className="font-heading text-xl font-extrabold">
-            {topupPack.name}
-          </h3>
-          <p className="mt-1.5 flex items-center gap-2.5 text-lg font-medium">
-            <IconChip icon={CoinsIcon} className="size-8" />
-            {topupPack.credits} credits, one time
-          </p>
-        </div>
-        <DigitBoxes size="sm" value={usd(topupPack.priceCents)} />
-        <form action={createCheckoutSession}>
-          <input type="hidden" name="item" value="topup" />
-          <SubmitButton size="sm" variant="outline" busyLabel="Redirecting…">
-            Buy top-up
-          </SubmitButton>
-        </form>
+      {/* One-time credit packs: no subscription needed. */}
+      <div className="grid max-w-3xl gap-4 sm:grid-cols-3">
+        {topupPacks.map((pack) => (
+          <div
+            key={pack.id}
+            className="flex flex-col gap-3 rounded-lg border bg-card p-5 shadow-hard-sm"
+          >
+            <h3 className="font-heading text-lg">{pack.name}</h3>
+            <p className="flex items-center gap-2 text-base">
+              <IconChip icon={CoinsIcon} className="size-7" />
+              {pack.credits.toLocaleString("en-US")} credits, one time
+            </p>
+            <DigitBoxes size="sm" value={usd(pack.priceCents)} />
+            <form action={createCheckoutSession} className="mt-auto">
+              <input type="hidden" name="item" value="topup" />
+              <input type="hidden" name="pack" value={pack.id} />
+              <SubmitButton size="sm" variant="outline" busyLabel="Redirecting…">
+                Buy {pack.credits.toLocaleString("en-US")} credits
+              </SubmitButton>
+            </form>
+          </div>
+        ))}
+      </div>
+
+      <Card className="max-w-xl pt-0">
+        {/* v4 medium-fun app register: panel-colored header strips. */}
+        <CardHeader className="border-b-2 bg-pop-sky py-3.5">
+          <p className="eyebrow">Current plan</p>
+          <CardTitle className="flex items-center gap-2">
+            {currentPlan.name}
+            {currentPlan.priceMonthlyCents > 0 ? (
+              // Key numbers render as mono chips (DESIGN.md v4.1).
+              <span className="chip-mono">
+                {usd(currentPlan.priceMonthlyCents)}/mo
+              </span>
+            ) : null}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-1.5">
+          {isActive && sub?.currentPeriodEnd ? (
+            <p className="text-sm">
+              {sub.cancelAtPeriodEnd ? "Ends" : "Renews"}{" "}
+              <span className="font-mono">{isoDate(sub.currentPeriodEnd)}</span>
+              {sub.cancelAtPeriodEnd
+                ? " — remaining credits stay usable."
+                : ` — grants ${currentPlan.monthlyCredits} credits.`}
+            </p>
+          ) : (
+            <p className="text-sm">
+              No subscription. Credits from signup and top-ups never expire.
+            </p>
+          )}
+          {sub?.paymentMethodBrand && sub.paymentMethodLast4 ? (
+            <p className="font-mono text-xs text-muted-foreground">
+              {sub.paymentMethodBrand} ·· {sub.paymentMethodLast4}
+            </p>
+          ) : null}
+          {sub && !isActive && sub.status !== "none" ? (
+            <p className="text-sm text-debit-text">
+              Subscription status: {sub.status} — check the customer portal.
+            </p>
+          ) : null}
+        </CardContent>
+        {isActive ? (
+          <CardFooter>
+            <form action={createPortalSession}>
+              <SubmitButton size="sm" busyLabel="Opening portal…">
+                Manage subscription
+              </SubmitButton>
+            </form>
+          </CardFooter>
+        ) : null}
+      </Card>
+
+      {/* Plan cards — every line reads from config/plans.ts. */}
+      <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+        {[plans.pro, plans.ultra].map((plan) => (
+          <PlanCard
+            key={plan.id}
+            plan={plan}
+            isActive={isActive}
+            isCurrent={isActive && currentPlan.id === plan.id}
+          />
+        ))}
+      </div>
+
+      {/* One-time credit packs: no subscription needed. */}
+      <div className="grid max-w-3xl gap-4 sm:grid-cols-3">
+        {topupPacks.map((pack) => (
+          <div
+            key={pack.id}
+            className="flex flex-col gap-3 rounded-lg border bg-card p-5 shadow-hard-sm"
+          >
+            <h3 className="font-heading text-lg">{pack.name}</h3>
+            <p className="flex items-center gap-2 text-base">
+              <IconChip icon={CoinsIcon} className="size-7" />
+              {pack.credits.toLocaleString("en-US")} credits, one time
+            </p>
+            <DigitBoxes size="sm" value={usd(pack.priceCents)} />
+            <form action={createCheckoutSession} className="mt-auto">
+              <input type="hidden" name="item" value="topup" />
+              <input type="hidden" name="pack" value={pack.id} />
+              <SubmitButton size="sm" variant="outline" busyLabel="Redirecting…">
+                Buy {pack.credits.toLocaleString("en-US")} credits
+              </SubmitButton>
+            </form>
+          </div>
+        ))}
       </div>
 
       <Card className="max-w-xl pt-0">

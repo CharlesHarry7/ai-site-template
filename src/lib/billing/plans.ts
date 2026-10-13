@@ -1,4 +1,10 @@
-import { plans, topupPack, type PaidPlanId, type Plan } from "@/config/plans";
+import {
+  plans,
+  topupPackById,
+  type PaidPlanId,
+  type Plan,
+  type TopupPackId,
+} from "@/config/plans";
 import { env } from "@/lib/env";
 
 // Resolves the pure plan config (src/config/plans.ts) against the
@@ -16,11 +22,12 @@ export function priceIdFor(planId: PaidPlanId): string {
   return priceId;
 }
 
-export function topupPriceId(): string {
-  const priceId = env[topupPack.priceEnvKey];
+export function topupPriceId(packId: TopupPackId): string {
+  const { priceEnvKey } = topupPackById(packId);
+  const priceId = env[priceEnvKey];
   if (!priceId) {
     throw new Error(
-      `Stripe is not configured: ${topupPack.priceEnvKey} is missing (see .env.example).`,
+      `Stripe is not configured: ${priceEnvKey} is missing (see .env.example).`,
     );
   }
   return priceId;

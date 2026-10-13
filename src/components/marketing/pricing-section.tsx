@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CoinsIcon, DoorOpenIcon, InfinityIcon } from "lucide-react";
 
-import { plans, topupPack } from "@/config/plans";
+import { plans, topupPacks } from "@/config/plans";
 
 import { DigitBoxes } from "@/components/digit-boxes";
 import { IconChip } from "@/components/icon-chip";
@@ -90,19 +90,25 @@ export function PricingSection() {
               </Link>
             </div>
           ))}
-          <div className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 border-b-2 px-2 py-6 sm:grid-cols-[64px_150px_1fr_110px_auto]">
-            <span className="font-mono text-xs text-muted-foreground">
-              topup
-            </span>
-            <h3 className="text-xl font-semibold">{topupPack.name}</h3>
-            <p className="col-span-2 col-start-2 text-xl sm:col-span-1 sm:col-start-3">
-              {topupPack.credits} credits, one-time, no subscription required.
-            </p>
-            <span className="col-start-2 font-mono text-sm sm:col-start-4 sm:text-right">
-              {usd(topupPack.priceCents)}
-            </span>
-            <span aria-hidden className="hidden sm:block" />
-          </div>
+          {topupPacks.map((pack) => (
+            <div
+              key={pack.id}
+              className="grid grid-cols-[64px_1fr] items-baseline gap-x-6 border-b-2 px-2 py-6 sm:grid-cols-[64px_150px_1fr_110px_auto]"
+            >
+              <span className="font-mono text-xs text-muted-foreground">
+                pack
+              </span>
+              <h3 className="text-xl font-semibold">{pack.name}</h3>
+              <p className="col-span-2 col-start-2 text-xl sm:col-span-1 sm:col-start-3">
+                {pack.credits.toLocaleString("en-US")} credits, one-time, no
+                subscription required.
+              </p>
+              <span className="col-start-2 font-mono text-sm sm:col-start-4 sm:text-right">
+                {usd(pack.priceCents)}
+              </span>
+              <span aria-hidden className="hidden sm:block" />
+            </div>
+          ))}
         </div>
       </div>
     </section>

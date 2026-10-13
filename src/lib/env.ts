@@ -19,6 +19,8 @@ const STRIPE_VARS = [
   "STRIPE_PRICE_PRO_MONTHLY",
   "STRIPE_PRICE_ULTRA_MONTHLY",
   "STRIPE_PRICE_TOPUP_100",
+  "STRIPE_PRICE_TOPUP_400",
+  "STRIPE_PRICE_TOPUP_1200",
 ] as const;
 
 const schema = z
@@ -69,6 +71,8 @@ const schema = z
     STRIPE_PRICE_PRO_MONTHLY: priceId(),
     STRIPE_PRICE_ULTRA_MONTHLY: priceId(),
     STRIPE_PRICE_TOPUP_100: priceId(),
+    STRIPE_PRICE_TOPUP_400: priceId(),
+    STRIPE_PRICE_TOPUP_1200: priceId(),
 
     // ── AI generation ─────────────────────────────────────────────────────
     AI_GATEWAY_API_KEY: z.string().optional(),

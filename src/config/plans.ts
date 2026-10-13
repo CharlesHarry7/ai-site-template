@@ -64,10 +64,28 @@ export const plans: Record<PlanId, Plan> = {
   },
 };
 
-/** One-time credit pack (Checkout mode "payment"). */
-export const topupPack = {
-  name: "Top-up",
-  credits: 100,
-  priceCents: 500,
-  priceEnvKey: "STRIPE_PRICE_TOPUP_100",
-} as const;
+/** One-time credit packs (Checkout mode "payment"). Approved by the repo
+ * owner 2026-10-13: $5 / 100, $15 / 400, $39 / 1,200. */
+export type TopupPackId = "starter" | "standard" | "bulk";
+export type TopupPack = {
+  id: TopupPackId;
+  name: string;
+  credits: number;
+  /** USD cents, one time. */
+  priceCents: number;
+  priceEnvKey: "STRIPE_PRICE_TOPUP_100" | "STRIPE_PRICE_TOPUP_400" | "STRIPE_PRICE_TOPUP_1200";
+};
+
+export const topupPacks: readonly TopupPack[] = [
+  { id: "starter", name: "Starter pack", credits: 100, priceCents: 500, priceEnvKey: "STRIPE_PRICE_TOPUP_100" },
+  { id: "standard", name: "Standard pack", credits: 400, priceCents: 1500, priceEnvKey: "STRIPE_PRICE_TOPUP_400" },
+  { id: "bulk", name: "Bulk pack", credits: 1200, priceCents: 3900, priceEnvKey: "STRIPE_PRICE_TOPUP_1200" },
+];
+
+export const topupPackIds = ["starter", "standard", "bulk"] as const;
+
+export function topupPackById(id: TopupPackId): TopupPack {
+  const pack = topupPacks.find((p) => p.id === id);
+  if (!pack) throw new Error(`Unknown top-up pack: ${id}`);
+  return pack;
+}

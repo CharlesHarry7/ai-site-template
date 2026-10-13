@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import { topupPack } from "@/config/plans";
+import { topupPackById, topupPackIds } from "@/config/plans";
 import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { requireSession } from "@/lib/auth/session";
@@ -19,6 +19,7 @@ import { getStripe } from "./stripe";
 
 const checkoutInput = z.object({
   item: z.enum(["pro", "ultra", "topup"]),
+  pack: z.enum(topupPackIds).default("starter"),
 });
 
 export async function createCheckoutSession(formData: FormData): Promise<void> {
@@ -28,7 +29,11 @@ export async function createCheckoutSession(formData: FormData): Promise<void> {
       "Stripe is not configured — set the STRIPE_* variables in .env (see .env.example).",
     );
   }
-  const { item } = checkoutInput.parse({ item: formData.get("item") });
+  const { item, pack } = checkoutInput.parse({
+    item: formData.get("item"),
+    pack: formData.get("pack") ?? undefined,
+  });
+  const topup = topupPackById(pack);
   const customerId = await ensureStripeCustomer(session.user);
 
   // The UI hides subscribe buttons for subscribers, but a hand-crafted POST
@@ -54,7 +59,7 @@ export async function createCheckoutSession(formData: FormData): Promise<void> {
     mode: item === "topup" ? "payment" : "subscription",
     line_items: [
       {
-        price: item === "topup" ? topupPriceId() : priceIdFor(item),
+        price: item === "topup" ? topupPriceId(pack) : priceIdFor(item),
         quantity: 1,
       },
     ],
@@ -65,7 +70,8 @@ export async function createCheckoutSession(formData: FormData): Promise<void> {
       ? {
           metadata: {
             kind: "topup",
-            credits: String(topupPack.credits),
+            pack: topup.id,
+            credits: String(topup.credits),
           },
         }
       : {}),

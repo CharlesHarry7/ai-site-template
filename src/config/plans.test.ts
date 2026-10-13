@@ -4,7 +4,7 @@ import {
   GENERATION_COST_CREDITS,
   WELCOME_CREDITS,
   plans,
-  topupPack,
+  topupPacks,
 } from "./plans";
 
 describe("plans config", () => {
@@ -21,8 +21,10 @@ describe("plans config", () => {
       expect(plan.priceMonthlyCents).toBeGreaterThanOrEqual(0);
       expect(plan.monthlyCredits).toBeGreaterThanOrEqual(0);
     }
-    expect(Number.isInteger(topupPack.credits)).toBe(true);
-    expect(Number.isInteger(topupPack.priceCents)).toBe(true);
+    for (const pack of topupPacks) {
+      expect(Number.isInteger(pack.credits)).toBe(true);
+      expect(Number.isInteger(pack.priceCents)).toBe(true);
+    }
     expect(Number.isInteger(WELCOME_CREDITS)).toBe(true);
   });
 
@@ -57,8 +59,11 @@ describe("plans config", () => {
     expect(plans.pro.monthlyCredits).toBe(200);
     expect(plans.ultra.priceMonthlyCents).toBe(2900);
     expect(plans.ultra.monthlyCredits).toBe(1000);
-    expect(topupPack.credits).toBe(100);
-    expect(topupPack.priceCents).toBe(500);
+    expect(topupPacks.map((p) => [p.credits, p.priceCents])).toEqual([
+      [100, 500],
+      [400, 1500],
+      [1200, 3900],
+    ]);
   });
 
   it("every plan has pricing-page copy", () => {
